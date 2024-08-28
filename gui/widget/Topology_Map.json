@@ -1,0 +1,28 @@
+{
+  "$schema": "projectWidget.schema.json",
+  "config": {
+    "chart": {
+      "beginSetView": [
+        [
+          47.1322891,
+          7.240269
+        ],
+        15
+      ],
+      "height": "calc(60vh - 180px)"
+    },
+    "style": ".map-parent {\n  height: calc(60vh - 150px);\n}",
+    "tile": {
+      "auto": {
+        "name": "Topology_Map"
+      },
+      "defaultTestData": false,
+      "subtitle": "",
+      "title": "Topology_Map"
+    }
+  },
+  "format": "csv",
+  "name": "Topology_Map",
+  "systemTypes": [],
+  "type": "LiefletMap"
+}

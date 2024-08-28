@@ -1,0 +1,59 @@
+{
+  "$schema": "../autoCommands.schema.json",
+  "autoCommand": [
+    {
+      "edges": [
+        {
+          "id": 2
+        }
+      ],
+      "id": 0,
+      "input": {
+        "config": "{\n    \"showDialog\": false,\n    \"argsSchema\": {}\n}",
+        "configFormat": "json",
+        "data": {},
+        "dataFormat": "json",
+        "title": ""
+      },
+      "posX": -735,
+      "posY": -104,
+      "type": "start"
+    },
+    {
+      "edges": [
+        {
+          "id": 1
+        }
+      ],
+      "id": 2,
+      "input": {
+        "config": {
+          "dataType": "json",
+          "publish": "private",
+          "sendType": "set",
+          "widgetName": "Topology_Table"
+        },
+        "configFormat": "json",
+        "dataFormat": "javascript",
+        "name": "",
+        "title": "Topology_Table"
+      },
+      "posX": -636,
+      "posY": -101,
+      "type": "widget"
+    },
+    {
+      "edges": [],
+      "id": 1,
+      "input": {
+        "configFormat": "javascript",
+        "dataFormat": "html",
+        "name": "labelled_cell_data",
+        "title": "fetch_data"
+      },
+      "posX": -561.5,
+      "posY": -111,
+      "type": "fetch"
+    }
+  ]
+}

@@ -1,0 +1,170 @@
+#
+# COPYRIGHT Ericsson 2024
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+  
+{{- if .Values.gui.enabled }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "eric-oss-scoping-poc.fullname" . }}-gui
+  labels:
+  {{- include "eric-oss-scoping-poc.labels" . | nindent 4 }}
+  annotations:
+  {{- include "eric-oss-scoping-poc.annotations" . | nindent 4 }}
+spec:
+  replicas: 1
+  serviceName: {{ include "eric-oss-scoping-poc.fullname" . }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "eric-oss-scoping-poc.name" . }}-gui
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  updateStrategy:
+    type: {{ .Values.updateStrategy.type | quote }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "eric-oss-scoping-poc.name" . }}-gui
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/version: {{ include "eric-oss-scoping-poc.version" . }}
+        {{- include "eric-oss-scoping-poc.directStreamingLabel" . | indent 8 }}
+      annotations:
+        {{- include "eric-oss-scoping-poc.annotations" . | nindent 8 }}
+        {{- include "eric-oss-scoping-poc.container-annotations" . | nindent 8 }}
+    spec:
+      {{- if include "eric-oss-scoping-poc.pullSecret" . }}
+      imagePullSecrets:
+        - name: {{ include "eric-oss-scoping-poc.pullSecret" . | quote }}
+      {{- end }}
+      serviceAccountName: {{ template "eric-oss-scoping-poc.fullname" . }}
+      securityContext:
+        fsGroup: {{ include "eric-oss-scoping-poc.fsGroup.coordinated" . }}
+        {{- include "eric-oss-scoping-poc.seccomp-profile" . | indent 8 }}
+      volumes:
+        - name: owlws-home
+          emptyDir: {}
+        - name: nginx-etc
+          emptyDir: {}
+        - name: nginx-cache
+          emptyDir: {}
+        - name: nginx-lib
+          emptyDir: {}
+        - name: nginx-log
+          emptyDir: {}
+        - name: nginx-run
+          emptyDir: {}
+      restartPolicy: {{ .Values.restartPolicy.deployment }}
+      containers:
+        - name: redis
+          image: {{ template "eric-oss-scoping-poc.redisImagePath" . }}
+          ports:
+            - name: redis
+              containerPort: 6379
+              protocol: TCP
+          livenessProbe: {{- toYaml (index .Values "probes" "eric-oss-scoping-poc-gui" "livenessProbe") | nindent 12 }}
+            tcpSocket:
+              port: 6379
+          readinessProbe: {{- toYaml (index .Values "probes" "eric-oss-scoping-poc-gui" "readinessProbe") | nindent 12 }}
+            tcpSocket:
+              port: 6379
+          imagePullPolicy: {{ template "eric-oss-scoping-poc.registryImagePullPolicy" . }}
+          securityContext:
+            runAsUser: 999
+            {{- include "eric-oss-scoping-poc.containerSecurityContext" . | nindent 12 }}
+        - name: owlws
+          image: {{ template "eric-oss-scoping-poc.backendImagePath" . }}
+          ports:
+            - name: backend
+              containerPort: 8081
+              protocol: TCP
+          env:
+            - name: REDIS_HOST
+              value: localhost
+          livenessProbe: {{- toYaml (index .Values "probes" "eric-oss-scoping-poc-gui" "livenessProbe") | nindent 12 }}
+            tcpSocket:
+              port: 8081
+          readinessProbe: {{- toYaml (index .Values "probes" "eric-oss-scoping-poc-gui" "readinessProbe") | nindent 12 }}
+            tcpSocket:
+              port: 8081
+          volumeMounts:
+            - name: owlws-home
+              mountPath: /home/owlws/
+          imagePullPolicy: {{ template "eric-oss-scoping-poc.registryImagePullPolicy" . }}
+          securityContext: {{ include "eric-oss-scoping-poc.containerSecurityContext" . | nindent 12 }}
+        - name: e-owl
+          image: {{ template "eric-oss-scoping-poc.frontendImagePath" . }}
+          ports:
+            - name: frontend
+              containerPort: 8090
+              protocol: TCP
+          env:
+            - name: NGINX_PORT
+              value: "8090"
+            - name: NGINX_PROXY_HOST
+              value: localhost
+            - name: OWL_CONTEXT_PATH
+              value: {{ .Values.gui.contextPath }}
+          livenessProbe: {{- toYaml (index .Values "probes" "eric-oss-scoping-poc-gui" "livenessProbe") | nindent 12 }}
+            tcpSocket:
+              port: 8090
+          readinessProbe: {{- toYaml (index .Values "probes" "eric-oss-scoping-poc-gui" "readinessProbe") | nindent 12 }}
+            tcpSocket:
+              port: 8090
+          imagePullPolicy: {{ template "eric-oss-scoping-poc.registryImagePullPolicy" . }}
+          securityContext: {{ include "eric-oss-scoping-poc.containerSecurityContext" . | nindent 12 }}
+          volumeMounts:
+            {{- if .Values.persistentVolumeClaim.enabled }}
+            - mountPath: /data
+              name: redis
+            {{- end }}
+            - mountPath: /etc/nginx/conf.d/
+              name: nginx-etc
+            - mountPath: /var/cache/nginx
+              name: nginx-cache
+            - mountPath: /var/lib/nginx
+              name: nginx-lib
+            - mountPath: /var/log/nginx
+              name: nginx-log
+            - mountPath: /var/run
+              name: nginx-run
+
+      nodeSelector: {{ include "eric-oss-scoping-poc.nodeSelector" . | nindent 6 -}}
+      {{- with .Values.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{- toYaml . | nindent 9 }}
+      {{- end }}
+
+      {{- with .Values.tolerations }}
+      tolerations: {{- toYaml . | nindent 9 }}
+      {{- end }}
+
+      {{- if (index .Values "podPriority" "eric-oss-scoping-poc" "priorityClassName") }}
+      priorityClassName: {{ (index .Values "podPriority" "eric-oss-scoping-poc" "priorityClassName") }}
+      {{- end }}
+      {{- include "eric-oss-scoping-poc.guiAffinity" . | indent 6 }}
+  {{- if .Values.persistentVolumeClaim.enabled }}
+  volumeClaimTemplates:
+    - kind: PersistentVolumeClaim
+      apiVersion: v1
+      metadata:
+        name: redis
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        {{- if .Values.persistentVolumeClaim.storageClassName }}
+        storageClassName: {{ .Values.persistentVolumeClaim.storageClassName }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.persistentVolumeClaim.size }}
+  {{- end }}
+{{- end }}

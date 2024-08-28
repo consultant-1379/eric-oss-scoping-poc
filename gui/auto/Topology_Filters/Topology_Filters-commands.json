@@ -1,0 +1,98 @@
+{
+  "$schema": "../autoCommands.schema.json",
+  "autoCommand": [
+    {
+      "edges": [
+        {
+          "id": 3
+        }
+      ],
+      "id": 0,
+      "input": {
+        "config": "{\n    \"showDialog\": false,\n    \"argsSchema\": {}\n}",
+        "configFormat": "json",
+        "data": {},
+        "dataFormat": "json",
+        "title": ""
+      },
+      "posX": -645,
+      "posY": -128,
+      "type": "start"
+    },
+    {
+      "edges": [
+        {
+          "id": 4
+        }
+      ],
+      "id": 2,
+      "input": {
+        "config": {
+          "dataType": "json",
+          "publish": "public",
+          "sendType": "config",
+          "widgetName": "Topology_Filter_Form"
+        },
+        "configFormat": "json",
+        "dataFormat": "javascript",
+        "name": "populated_filters",
+        "title": "populate_filters"
+      },
+      "posX": -240,
+      "posY": -172.5,
+      "type": "widget"
+    },
+    {
+      "edges": [
+        {
+          "id": 2
+        }
+      ],
+      "id": 1,
+      "input": {
+        "configFormat": "javascript",
+        "dataFormat": "html",
+        "name": "cell_density_data",
+        "title": "fetch_data"
+      },
+      "posX": -391.5,
+      "posY": -200.5,
+      "type": "fetch"
+    },
+    {
+      "edges": [
+        {
+          "id": 1
+        }
+      ],
+      "id": 3,
+      "input": {
+        "configFormat": "javascript",
+        "dataFormat": "html",
+        "name": "data_loaded",
+        "title": "trigger_load"
+      },
+      "posX": -548.5,
+      "posY": -194,
+      "type": "fetch"
+    },
+    {
+      "edges": [],
+      "id": 4,
+      "input": {
+        "config": {
+          "action": "put",
+          "dataFormat": "json",
+          "dataType": "items"
+        },
+        "configFormat": "json",
+        "dataFormat": "javascript",
+        "name": "",
+        "title": "store_data"
+      },
+      "posX": -62.5,
+      "posY": -132.5,
+      "type": "storage"
+    }
+  ]
+}

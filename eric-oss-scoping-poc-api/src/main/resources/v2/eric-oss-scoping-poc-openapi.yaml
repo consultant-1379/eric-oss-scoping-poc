@@ -1,0 +1,217 @@
+#
+# COPYRIGHT Ericsson 2024
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+openapi: "3.0.2"
+info:
+    x-api-id: 3e43d9fe-1fc9-4e1c-af1a-594dfde601f2
+    x-audience: external-public
+    description: "Scoping rApp prototype"
+    version: "0.0.1"
+    title: "Scoping rApp prototype"
+    license:
+        name: "COPYRIGHT Ericsson 2024"
+        url: "https://www.ericsson.com/en/legal"
+    termsOfService: "https://www.ericsson.com/en/legal"
+    contact:
+        email: "IDUN_rAppPrototypeTeam@ericsson.onmicrosoft.com"
+paths:
+    /v1/loadData:
+        get:
+            tags:
+                - "data"
+            summary: "Load data from the BDR"
+            operationId: "getLabelledData"
+            responses:
+                "200":
+                    description: "Load task triggered"
+                "400":
+                    description: "Invalid request"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                default:
+                    description: "Internal Server Error"
+
+    /v1/cells:
+        get:
+            tags:
+                - "data"
+            summary: "get the list of labelled cells"
+            operationId: "getCells"
+            responses:
+                "200":
+                    description: "OK"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Cells"
+
+    /v1/neighbours:
+        get:
+            tags:
+                - "data"
+            summary: "get the list of neighbours for a source cell"
+            operationId: "getNeighbours"
+            parameters:
+                - name: srcCell
+                  in: query
+                  description: "source Cell"
+                  schema:
+                      type: String
+                      default: false
+                - name: hoType
+                  in: query
+                  description: "Handover type"
+                  schema:
+                      type: String
+                      default: false
+            responses:
+                "200":
+                    description: "OK"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Neighbours"
+
+
+components:
+    schemas:
+        Error:
+            type: object
+            required:
+                - message
+            properties:
+                message:
+                    type: string
+        Neighbours:
+            type: array
+            items:
+                $ref: "#/components/schemas/Neighbour"
+        Neighbour:
+            type: object
+            properties:
+                nodeCell:
+                    description: "Identifier for the node and cell"
+                    type: string
+                srcCell:
+                    description: "Name of the source cell"
+                    type: string
+                realLatitude:
+                    description: "latitude of the cell"
+                    type: double
+                realLongitude:
+                    description: "Longitude of the cell"
+                    type: double
+                averageICD:
+                    description: "average ICD"
+                    type: integer
+                azimuth:
+                    description: "Azimuth of the cell"
+                    type: integer
+                hoType:
+                    description: "HandOver Type"
+                    type: string
+                densityCategory:
+                    description: "Density label for the cell"
+                    type: string
+                numberHoToNeighbor:
+                    description: "Number HO to neighbor"
+                    type: integer
+                distanceBetweenCells:
+                    description: "Distance between Cells"
+                    type: integer
+        Cells:
+            type: array
+            items:
+                $ref: "#/components/schemas/Cell"
+        Cell:
+            type: object
+            required:
+                - nodeCell
+            properties:
+                nodeCell:
+                    description: "Identifier for the node and cell"
+                    type: string
+                node:
+                    description: "Name of the cell"
+                    type: string
+                latitude:
+                    description: "latitude of the cell"
+                    type: double
+                longitude:
+                    description: "Longitude of the cell"
+                    type: double
+                arfcnDL:
+                    description: "Frequency of teh cell"
+                    type: integer
+                beamwidth:
+                    description: "Beam width of the cell"
+                    type: integer
+                azimuth:
+                    description: "Azimuth of the cell"
+                    type: integer
+                indooroutdoor:
+                    description: "Label identifying if the cell is indoor our outdoor"
+                    type: string
+                cellrange:
+                    description: "Range of the cell"
+                    type: integer
+                clusterNumber:
+                    description: "Cluster number of the cell"
+                    type: integer
+                geoDensity:
+                    description: "Ordinal of the density classification"
+                    type: integer
+                geoDensityCategory:
+                    description: "Density label for the cell"
+                    type: string
+                coSiteId:
+                    description: "Co-site ID of the cell"
+                    type: string
+                coSiteWtihNameId:
+                    description: "Co-Site ID with name of the cell"
+                    type: string
+                coSectorId:
+                    description: "Co-Sector ID of the cell"
+                    type: string
+                networkType:
+                    description: "NetworkType of the cell"
+                    type: string
+                hoDensityCategoryAll:
+                    description: "HO Density Category All"
+                    type: string
+                hoDensityCategoryIntra:
+                    description: "HO Density Category Intra"
+                    type: string
+                geoAverageInterCellDistanceInCoverageNeighbors:
+                    description: "Average inter cell distance in coverage neighbors"
+                    type: integer
+                hoAverageCellDistanceAll:
+                    description: "Average inter cell distance all"
+                    type: integer
+                hoAverageCellDistanceIntra:
+                    description: "Average inter cell distance all"
+                    type: integer
+                geoAverageInterCellDistNearestNeighbours:
+                    description: "Average nearest neighbor cell distance"
+                    type: integer
+                geoAllDiff:
+                    description: "Geo and HO all difference"
+                    type: integer
+                geoIntraDiff:
+                    description: "Geo and HO Intra difference"
+                    type: integer

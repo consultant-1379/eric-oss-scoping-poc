@@ -1,0 +1,76 @@
+{
+  "$schema": "projectWidget.schema.json",
+  "config": {
+    "columns": [
+      {
+        "attribute": "nodeCell",
+        "title": "NodeCell"
+      },
+      {
+        "attribute": "latitude",
+        "title": "Latitude"
+      },
+      {
+        "attribute": "longitude",
+        "title": "Longitude"
+      },
+      {
+        "attribute": "azimuth",
+        "title": "Azimuth"
+      },
+      {
+        "attribute": "arfcnDL",
+        "title": "arfcnDL"
+      },
+      {
+        "attribute": "densityCategory",
+        "title": "Geo Density"
+      },
+      {
+        "attribute": "cositename",
+        "title": "Cosite Name"
+      },
+      {
+        "attribute": "cositeId",
+        "title": "Cosite Id"
+      },
+      {
+        "attribute": "cosectorId",
+        "title": "Cosector Id"
+      },
+      {
+        "attribute": "networkType",
+        "title": "NetworkType"
+      },
+      {
+        "attribute": "hoDensityCategoryAll",
+        "title": "HO Density All(Inter+Intra)"
+      },
+      {
+        "attribute": "hoDensityCategoryIntra",
+        "title": "HO Density Intra"
+      },
+      {
+        "attribute": "distanceToNeighbor",
+        "title": "Distance"
+      }
+    ],
+    "filterable": false,
+    "multiSelect": false,
+    "style": "min-height:10vh;\nmax-height:20vh;",
+    "tile": {
+      "auto": {
+        "name": "Topology_Table"
+      },
+      "defaultTestData": false,
+      "subtitle": "",
+      "title": "Topology_Table"
+    },
+    "tiny": true,
+    "virtualScroll": false
+  },
+  "format": "csv",
+  "name": "Topology_Table",
+  "systemTypes": [],
+  "type": "Table"
+}

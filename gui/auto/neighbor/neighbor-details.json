@@ -1,0 +1,8 @@
+{
+  "$schema": "../autoDetails.schema.json",
+  "description": "neighbor",
+  "max": 100,
+  "name": "neighbor",
+  "type": [],
+  "viewPermission": "Disallow"
+}

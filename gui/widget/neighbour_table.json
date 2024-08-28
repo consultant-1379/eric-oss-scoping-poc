@@ -1,0 +1,60 @@
+{
+  "$schema": "projectWidget.schema.json",
+  "config": {
+    "columns": [
+      {
+        "attribute": "nodeCell",
+        "title": "NodeCell"
+      },
+      {
+        "attribute": "srcCell",
+        "title": "SourceCell"
+      },
+      {
+        "attribute": "latitude",
+        "title": "Latitude"
+      },
+      {
+        "attribute": "longitude",
+        "title": "Longitude"
+      },
+      {
+        "attribute": "HOType",
+        "title": "Density Type"
+      },
+      {
+        "attribute": "azimuth",
+        "title": "Azimuth"
+      },
+      {
+        "attribute": "averageICD",
+        "title": "Average ICD"
+      },
+      {
+        "attribute": "numberHoToNeighbor",
+        "title": "numberHoToNeighbor"
+      },
+      {
+        "attribute": "distanceToNeighbor",
+        "title": "Distance"
+      }
+    ],
+    "filterable": false,
+    "multiSelect": false,
+    "style": "",
+    "tile": {
+      "auto": {
+        "name": "neighbour_table"
+      },
+      "defaultTestData": false,
+      "subtitle": "",
+      "title": "Neighbor_Table"
+    },
+    "tiny": true,
+    "virtualScroll": false
+  },
+  "format": "csv",
+  "name": "neighbour_table",
+  "systemTypes": [],
+  "type": "Table"
+}

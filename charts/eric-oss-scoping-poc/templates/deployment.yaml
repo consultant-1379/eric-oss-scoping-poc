@@ -1,0 +1,144 @@
+#
+# COPYRIGHT Ericsson 2024
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "eric-oss-scoping-poc.fullname" . }}
+  labels:
+  {{- include "eric-oss-scoping-poc.labels" . | nindent 4 }}
+  annotations:
+  {{- $prometheus := (merge (dict "additionalAnnotations" (include "eric-oss-scoping-poc.prometheus" . | fromYaml)) .) -}}
+  {{- include "eric-oss-scoping-poc.annotations" $prometheus | nindent 4 }}
+spec:
+{{- if not .Values.autoScaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "eric-oss-scoping-poc.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  strategy:
+    type: {{ .Values.updateStrategy.type | quote }}
+    {{- if and (eq .Values.updateStrategy.type "RollingUpdate") .Values.updateStrategy.rollingUpdate }}
+    rollingUpdate:
+      maxUnavailable: {{ .Values.updateStrategy.rollingUpdate.maxUnavailable }}
+      maxSurge: {{ .Values.updateStrategy.rollingUpdate.maxSurge }}
+    {{- end }}
+  template:
+    metadata:
+      labels:
+        {{- $label := (merge (dict "additionalLabels" (dict "eric-data-object-storage-mn-access" "true")) .) }}
+        {{- include "eric-oss-scoping-poc.labels" $label | nindent 8 }}
+        {{- include "eric-oss-scoping-poc.directStreamingLabel" . | nindent 8 }}
+      annotations:
+        {{- include "eric-oss-scoping-poc.annotations" $prometheus | nindent 8 }}
+        {{- include "eric-oss-scoping-poc.container-annotations" . | nindent 8 }}
+    spec:
+      {{- if include "eric-oss-scoping-poc.pullSecret" . }}
+      imagePullSecrets:
+        - name: {{ include "eric-oss-scoping-poc.pullSecret" . | quote}}
+      {{- end }}
+      serviceAccountName: {{ template "eric-oss-scoping-poc.fullname" . }}
+      securityContext:
+        fsGroup: {{ include "eric-oss-scoping-poc.fsGroup.coordinated" . }}
+        {{- include "eric-oss-scoping-poc.seccomp-profile" . | indent 8 }}
+      volumes:
+        - name: tmp-volume
+          emptyDir: {}
+        {{- if .Values.clientId }}
+        - name: cacert-volume
+          secret:
+            secretName: {{ .Values.caSecretName }}
+        {{- end }}
+        - name: config-volume
+          configMap:
+            defaultMode: 493
+            name: {{ include "eric-oss-scoping-poc.name" . }}-configmap
+      restartPolicy: {{ .Values.restartPolicy.deployment }}
+      containers:
+        - name: eric-oss-scoping-poc
+          image: {{ template "eric-oss-scoping-poc.mainImagePath" . }}
+          imagePullPolicy: {{ template "eric-oss-scoping-poc.registryImagePullPolicy" . }}
+          securityContext: {{ include "eric-oss-scoping-poc.containerSecurityContext" . | nindent 12 }}
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp-volume
+            - name: config-volume
+              mountPath: /config
+            {{- if .Values.clientId }}
+            - name: cacert-volume
+              mountPath: /mnt/certs
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          env:
+          - name: SERVICE_ID
+            value: {{ include "eric-oss-scoping-poc.name" . | quote}}
+          - name: JAVA_OPTS
+            value: {{ include "eric-oss-scoping-poc.jvmHeapSettings" . }}
+          - name: TZ
+            value: {{ template "eric-oss-scoping-poc.timezone" . }}
+          {{- if and .Values.baseUrl .Values.clientId .Values.clientSecret }}
+          - name: BASE_URL
+            value: {{ .Values.baseUrl | replace "iam." "gas." | quote }}
+          - name: DCC_ENABLED
+            value: {{ .Values.rappSdk.dcc.enabled | quote }}
+          - name: IAM_URL
+            value: {{ .Values.baseUrl | quote }}
+          - name: CLIENT_ID
+            value: {{ .Values.clientId | quote }}
+          - name: CLIENT_SECRET
+            value: {{ .Values.clientSecret | quote }}
+          {{- end }}
+          {{- if .Values.clientId }}
+          - name: CA_CERT_PATH
+            value: "file:/mnt/certs/{{ .Values.caSecretKey }}"
+          {{- end }}
+          {{- if .Values.configuration.objectStore.secret }}
+          - name: BDR_ACCESSKEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.configuration.objectStore.secret | quote }}
+                key: accesskey
+          - name: BDR_SECRETKEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.configuration.objectStore.secret | quote }}
+                key: secretkey
+          {{- end }}
+      {{- include "eric-oss-scoping-poc.loggingEnv" . | indent 10 }}
+          resources: {{- include "eric-oss-scoping-poc.mainImageResourceAllocation" . | nindent 12 }}
+      nodeSelector: {{ include "eric-oss-scoping-poc.nodeSelector" . | nindent 6 -}}
+
+      {{- with .Values.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      {{- with .Values.tolerations }}
+      tolerations: {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      {{- if (index .Values "podPriority" "eric-oss-scoping-poc" "priorityClassName") }}
+      priorityClassName: {{ (index .Values "podPriority" "eric-oss-scoping-poc" "priorityClassName") }}
+      {{- end }}
+
+      {{- with .Values.topologySpreadConstraints.deployment }}
+      topologySpreadConstraints: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- include "eric-oss-scoping-poc.appAffinity" . | indent 6 }}

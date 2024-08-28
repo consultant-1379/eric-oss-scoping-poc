@@ -1,0 +1,393 @@
+{
+  "$schema": "projectWidget.schema.json",
+  "config": {
+    "rows": [
+      {
+        "cols": [
+          {
+            "sections": [
+              {
+                "text": "NodeCell",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "sections": [
+              {
+                "attribute": "nodeCell",
+                "textField": {
+                  "size": 15
+                },
+                "type": "textField"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "cols": [
+          {
+            "sections": [
+              {
+                "text": "arfcnDL",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "sections": [
+              {
+                "attribute": "arfcnDL",
+                "dropdown": {
+                  "data": [
+                    {
+                      "label": "643332"
+                    }
+                  ],
+                  "dataType": "single",
+                  "label": "arfcnDL"
+                },
+                "type": "dropdown",
+                "validate": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "cols": [
+          {
+            "sections": [
+              {
+                "text": "Indoor/Outdoor",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "sections": [
+              {
+                "attribute": "indooroutdoor",
+                "dropdown": {
+                  "data": [
+                    {
+                      "label": "indoor"
+                    },
+                    {
+                      "label": "outdoor"
+                    }
+                  ],
+                  "dataType": "single",
+                  "label": "indooroutdoor"
+                },
+                "type": "dropdown",
+                "validate": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "cols": [
+          {
+            "sections": [
+              {
+                "text": "Cell Range",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "sections": [
+              {
+                "attribute": "cellRange",
+                "dropdown": {
+                  "data": [
+                    {
+                      "label": "15000"
+                    }
+                  ],
+                  "dataType": "single",
+                  "label": "cellRange"
+                },
+                "type": "dropdown",
+                "validate": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "cols": [
+          {
+            "sections": [
+              {
+                "text": "Geo Density",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "sections": [
+              {
+                "attribute": "densityCategory",
+                "dropdown": {
+                  "data": [
+                    {
+                      "label": "URBAN"
+                    }
+                  ],
+                  "dataType": "single",
+                  "label": "densityCategory"
+                },
+                "type": "dropdown",
+                "validate": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "cols": [
+          {
+            "sections": [
+              {
+                "text": "Network Type",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "sections": [
+              {
+                "attribute": "networkType",
+                "dropdown": {
+                  "data": [
+                    {
+                      "label": "LTE"
+                    },
+                    {
+                      "label": "NR"
+                    }
+                  ],
+                  "dataType": "single",
+                  "label": "networkType"
+                },
+                "type": "dropdown",
+                "validate": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "cols": [
+          {
+            "sections": [
+              {
+                "text": "Density HO all(Inter+Intra)",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "sections": [
+              {
+                "attribute": "hoDensityCategoryAll",
+                "dropdown": {
+                  "data": [
+                    {
+                      "label": "URBAN"
+                    }
+                  ],
+                  "dataType": "single",
+                  "label": "hoDensityCategoryAll"
+                },
+                "type": "dropdown",
+                "validate": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "cols": [
+          {
+            "sections": [
+              {
+                "text": "Density HO Intra",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "sections": [
+              {
+                "attribute": "hoDensityCategoryIntra",
+                "dropdown": {
+                  "data": [
+                    {
+                      "label": "URBAN"
+                    }
+                  ],
+                  "dataType": "single",
+                  "label": "hoDensityCategoryIntra"
+                },
+                "type": "dropdown",
+                "validate": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "cols": [
+          {
+            "sections": [
+              {
+                "text": "Density Type",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "sections": [
+              {
+                "attribute": "densityType",
+                "dropdown": {
+                  "data": [
+                    {
+                      "label": "Geo"
+                    },
+                    {
+                      "label": "HO-All"
+                    },
+                    {
+                      "label": "HO-Intra"
+                    },
+                    {
+                      "label": "Geo+HO All"
+                    },
+                    {
+                      "label": "Geo+HO Intra"
+                    }
+                  ],
+                  "dataType": "single",
+                  "label": "densityType"
+                },
+                "type": "dropdown",
+                "validate": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "cols": [
+          {
+            "sections": [
+              {
+                "text": "GeoHoAllDiff",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "sections": [
+              {
+                "attribute": "geoHoAllDiff",
+                "dropdown": {
+                  "data": [
+                    {
+                      "label": "DenseUrban-Suburban"
+                    },
+                    {
+                      "label": "Urban-Rural"
+                    },
+                    {
+                      "label": "DenseUrban-Rural"
+                    }
+                  ],
+                  "dataType": "single",
+                  "label": "geoHoAllDiff"
+                },
+                "type": "dropdown",
+                "validate": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "cols": [
+          {
+            "sections": [
+              {
+                "text": "GeoHoIntraDiff",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "sections": [
+              {
+                "attribute": "geoHoIntraDiff",
+                "dropdown": {
+                  "data": [
+                    {
+                      "label": "DenseUrban-Suburban"
+                    },
+                    {
+                      "label": "Urban-Rural"
+                    },
+                    {
+                      "label": "DenseUrban-Rural"
+                    }
+                  ],
+                  "dataType": "single",
+                  "label": "geoHoIntraDiff"
+                },
+                "type": "dropdown",
+                "validate": true
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "style": "",
+    "tile": {
+      "actions": [
+        {
+          "auto": {
+            "name": "Update_Topology_Entries",
+            "trace": true
+          },
+          "footer": true,
+          "primary": true,
+          "title": "Apply"
+        },
+        {
+          "auto": {
+            "name": "neighbor",
+            "trace": true
+          },
+          "footer": true,
+          "primary": true,
+          "title": "Neighbor"
+        }
+      ],
+      "auto": {
+        "name": "Topology_Filters"
+      },
+      "defaultTestData": false,
+      "subtitle": "",
+      "title": "Topology_Filter_Form"
+    }
+  },
+  "format": "csv",
+  "name": "Topology_Filter_Form",
+  "systemTypes": [],
+  "type": "Form"
+}

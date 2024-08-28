@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ ~ COPYRIGHT Ericsson 2024
+ ~
+ ~
+ ~
+ ~ The copyright to the computer program(s) herein is the property of
+ ~
+ ~ Ericsson Inc. The programs may be used and/or copied only with written
+ ~
+ ~ permission from Ericsson Inc. or in accordance with the terms and
+ ~
+ ~ conditions stipulated in the agreement/contract under which the
+ ~
+ ~ program(s) have been supplied.
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ericsson.oss.predev</groupId>
+        <artifactId>eric-oss-rapp-starter-parent</artifactId>
+        <version>0.15.0-1</version>
+        <relativePath/>
+    </parent>
+
+
+  <groupId>com.ericsson.oss.apps</groupId>
+  <artifactId>eric-oss-scoping-poc</artifactId>
+  <version>1.12.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>eric-oss-scoping-poc</name>
+
+    <modules>
+        <module>eric-oss-scoping-poc-api</module>
+        <module>eric-oss-scoping-poc-app</module>
+    </modules>
+
+    <scm>
+    <developerConnection>${ericsson.scm.url}</developerConnection>
+    <connection>${ericsson.scm.url}</connection>
+    <tag>HEAD</tag>
+  </scm>
+
+  <properties>
+      <!-- Set compiler Java version, MUST match the Dockerfile JDK version -->
+      <maven.compiler.release>17</maven.compiler.release>
+      <maven.compiler.target>17</maven.compiler.target>
+
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <ericsson.scm.url>
+      scm:git:[fetch=]ssh://gerrit.ericsson.se:29418/OSS/com.ericsson.oss.apps/eric-oss-scoping-poc[push=]ssh://gerrit.ericsson.se:29418/OSS/com.ericsson.oss.apps/eric-oss-scoping-poc
+    </ericsson.scm.url>
+
+      <sonar.coverage.exclusions>**/api/**/*,**/model/**/*</sonar.coverage.exclusions>
+      <jacoco-maven-plugin.coveredratio.minimum>0.0</jacoco-maven-plugin.coveredratio.minimum>
+      <version.spring-cloud-contract>4.0.2</version.spring-cloud-contract>
+
+  </properties>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>com.mycila</groupId>
+          <artifactId>license-maven-plugin</artifactId>
+          <version>${version.license-maven-plugin}</version>
+          <configuration>
+            <header>license/copyright-2024.txt</header>
+            <validHeaders>
+              <validHeader>license/copyright-2020.txt</validHeader>
+              <validHeader>license/copyright-2021.txt</validHeader>
+              <validHeader>license/copyright-2022.txt</validHeader>
+              <validHeader>license/copyright-2023.txt</validHeader>
+              <validHeader>license/copyright-2024.txt</validHeader>
+            </validHeaders>
+            <excludes>
+              <exclude>.bob/*</exclude>
+              <exclude>.bob*/</exclude>
+              <exclude>bob/*</exclude>
+              <exclude>bob*/</exclude>
+              <exclude>k8s-logs/*</exclude>
+              <exclude>**/.helmignore</exclude>
+              <exclude>**/*.html</exclude>
+              <exclude>**/_helpers.tpl</exclude>
+              <exclude>**/*.tgz</exclude>
+              <exclude>**/VERSION*</exclude>
+              <exclude>**/*.repo</exclude>
+              <exclude>license/copyright*</exclude>
+              <exclude>design-rule-check-report*</exclude>
+              <exclude>helm-install-dry-run.log</exclude>
+              <exclude>*artifact.properties</exclude>
+              <exclude>**/*.txt</exclude>
+              <exclude>**/custom_stages.yaml</exclude>
+              <exclude>ci/scripts/update_cbos.sh</exclude>
+              <exclude>**/*.Jenkinsfile</exclude>
+              <exclude>**/*.adoc</exclude>
+              <exclude>**/*.config</exclude>
+              <exclude>**/rest2html*.zip</exclude>
+              <exclude>settings.xml</exclude>
+              <exclude>**/fossa/*</exclude>
+              <exclude>ci-cd/*</exclude>
+              <exclude>ci-cd*/</exclude>
+              <exclude>**/config/</exclude>
+              <exclude>generated/*</exclude>
+              <exclude>generated*/</exclude>
+              <exclude>dependencies/*</exclude>
+              <exclude>dependencies*/</exclude>
+            </excludes>
+            <headerDefinitions>
+              <headerDefinition>./license/javaHeaderDefinition.xml</headerDefinition>
+              <headerDefinition>./license/xmlHeaderDefinition.xml</headerDefinition>
+            </headerDefinitions>
+          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>check</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.sonarsource.scanner.maven</groupId>
+          <artifactId>sonar-maven-plugin</artifactId>
+          <version>${version.sonar-maven-plugin}</version>
+        </plugin>
+      <plugin>
+          <groupId>org.springframework.cloud</groupId>
+          <artifactId>spring-cloud-contract-maven-plugin</artifactId>
+          <version>${version.spring-cloud-contract}</version>
+          <extensions>true</extensions>
+          <configuration>
+              <baseClassForTests>com.ericsson.oss.apps.api.contract.TriggerApiBase</baseClassForTests>
+          </configuration>
+      </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>snapshot</id>
+      <name>armseligic-snapshot</name>
+      <url>https://arm.seli.gic.ericsson.se/artifactory/proj-eric-oss-dev-local</url>
+    </snapshotRepository>
+    <repository>
+      <id>release</id>
+      <name>armseligic-release</name>
+      <url>https://arm.seli.gic.ericsson.se/artifactory/proj-eric-oss-release-local</url>
+    </repository>
+  </distributionManagement>
+
+</project>

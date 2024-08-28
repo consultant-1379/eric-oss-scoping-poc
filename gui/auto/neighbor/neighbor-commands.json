@@ -1,0 +1,99 @@
+{
+  "$schema": "../autoCommands.schema.json",
+  "autoCommand": [
+    {
+      "edges": [
+        {
+          "id": 3
+        }
+      ],
+      "id": 0,
+      "input": {
+        "configFormat": "json",
+        "data": {},
+        "dataFormat": "json",
+        "title": ""
+      },
+      "posX": -492,
+      "posY": -213,
+      "type": "start"
+    },
+    {
+      "edges": [],
+      "id": 1,
+      "input": {
+        "config": {
+          "action": "get",
+          "dataFormat": "json",
+          "dataType": "items"
+        },
+        "configFormat": "json",
+        "dataFormat": "javascript",
+        "name": "cell_density_data",
+        "title": "load_data"
+      },
+      "posX": -385,
+      "posY": -128.5,
+      "type": "storage"
+    },
+    {
+      "edges": [
+        {
+          "id": 4
+        }
+      ],
+      "id": 2,
+      "input": {
+        "config": {
+          "dataType": "json",
+          "publish": "public",
+          "sendType": "set",
+          "widgetName": "neighbour_table"
+        },
+        "configFormat": "json",
+        "dataFormat": "javascript",
+        "name": "",
+        "title": "neighbor"
+      },
+      "posX": -271,
+      "posY": -208.5,
+      "type": "widget"
+    },
+    {
+      "edges": [
+        {
+          "id": 2
+        }
+      ],
+      "id": 3,
+      "input": {
+        "configFormat": "javascript",
+        "dataFormat": "html",
+        "name": "cell_neighbor_data",
+        "title": "fetch_data"
+      },
+      "posX": -392.7,
+      "posY": -217.29,
+      "type": "fetch"
+    },
+    {
+      "edges": [],
+      "id": 4,
+      "input": {
+        "config": {
+          "dataType": "json",
+          "publish": "public",
+          "sendType": "set",
+          "widgetName": "Topology_Map"
+        },
+        "configFormat": "json",
+        "dataFormat": "javascript",
+        "name": "",
+        "title": "update_map"
+      },
+      "posX": -176.5,
+      "posY": -199.5,
+      "type": "widget"
+    }
+  ]
+}

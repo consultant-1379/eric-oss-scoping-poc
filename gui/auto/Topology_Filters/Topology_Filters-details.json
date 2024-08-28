@@ -1,0 +1,8 @@
+{
+  "$schema": "../autoDetails.schema.json",
+  "description": "",
+  "max": 100,
+  "name": "Topology_Filters",
+  "type": [],
+  "viewPermission": "Disallow"
+}

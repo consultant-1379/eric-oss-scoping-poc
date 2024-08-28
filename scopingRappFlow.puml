@@ -1,0 +1,23 @@
+@startuml
+actor owl
+entity scopingPocApp
+database  DB
+collections BDR
+autonumber
+ group getCells
+    owl -> scopingPocApp: Get cells(Nodes)
+    scopingPocApp --> BDR: (if db is empty) Get categorization reports and neighbour reports
+
+    BDR -> scopingPocApp: (if db is empty) Read categorization reports and neighbour reports
+    scopingPocApp --> DB: (if db is empty) Save the read reports in DB
+    scopingPocApp --> owl: Return list of nodes
+ end
+  group getNeighbors
+     owl -> scopingPocApp: Get getNeighbors for a sourceNode
+     scopingPocApp --> BDR: (if db is empty) Get categorization reports and neighbour reports
+
+     BDR -> scopingPocApp: (if db is empty) Read categorization reports and neighbour reports
+     scopingPocApp --> DB: (if db is empty) Save the read reports in DB
+     scopingPocApp --> owl: Return list of Neighbors for a sourceNode
+  end
+@enduml

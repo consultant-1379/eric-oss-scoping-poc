@@ -1,0 +1,13 @@
+{
+  "data": [
+    {
+      "displayName": "App Scoping Sample",
+      "name": "App_Scoping_Sample",
+      "type": "euisdk"
+    }
+  ],
+  "defaultApp": "owl-editor",
+  "hideMenu": false,
+  "openMenu": true,
+  "searchable": true
+}

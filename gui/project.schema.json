@@ -1,0 +1,41 @@
+{
+  "$schema": "project.schema.json",
+  "apps": [
+    "App_Scoping_Sample"
+  ],
+  "autos": [
+    "Update_Topology_Entries",
+    "fetch_density_data",
+    "neighbor",
+    "Topology_Filters"
+  ],
+  "credentials": [],
+  "name": "",
+  "roles": [],
+  "storage": {
+    "items": [
+      {
+        "format": "json",
+        "key": "cell_density_data",
+        "url": "./storage/items/cell_density_data.json"
+      }
+    ],
+    "schemas": []
+  },
+  "systems": [
+    "naming",
+    "session",
+    "debug",
+    "request",
+    "startup",
+    "menu",
+    "plugin"
+  ],
+  "users": [],
+  "widgets": [
+    "Topology_Filter_Form",
+    "Topology_Map",
+    "neighbour_table",
+    "Topology_Table"
+  ]
+}
